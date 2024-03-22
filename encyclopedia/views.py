@@ -39,20 +39,26 @@ def page(request, name):
 def search(request):
     # https://stackoverflow.com/questions/150505/how-to-get-get-request-values-in-django
     # Capture the value of q/query
-    # !!! Entries are case sensitive at present. Must convert all data (title, entries, q) to upper- or lower-case. !!!
-    title = request.GET.get("q", "")
-    # entries is a variable that stores all entries/page titles in a list.
-    entries = util.list_entries()
-    # Test - print("Title", title)
-    # Test - print("Entries", entries)
-    # Test - print("Title in entries", title in entries)
-    # If the title is in the list of entries...
-    if title in entries:
+    # !!! Entries are case sensitive and data (title, entries, q) is converted to lower-case to compare. !!!
+    title = request.GET.get("q", "") 
+    # print("Title", title)
+    # print("Entries", entries)
+    # print("Title in entries", title in entries)
+    
+    # Convert entries to lowercase strings with util functions. 
+    # Both functions work - util.lower_entries_range() and util.lower_entries(). Which function is faster???
+    lowercase = util.lower_entries_range() # To search django was 3 requests - 54ms - Network Developer Tools
+    # lowercase = util.lower_entries() # To search django was 3 requests - 59ms - Network Developer Tools
+    # print('lowercase', lowercase)
+    # print('title.lower()', title.lower())
+
+    # If title.lower() is in the list of lowercase entries...
+    if title.lower() in lowercase:
         # Get the entry.
         entry = util.get_entry(title)
         # Redirect user to entry/title page results passing the GET request "q" value as kwargs. 
         # https://docs.djangoproject.com/en/5.0/ref/urlresolvers/
-        return HttpResponseRedirect(reverse("page", kwargs={"name": title}))
+        return HttpResponseRedirect(reverse("page", kwargs={"name": title.lower()}))
     else:
         # If the title is not in the list of entries...
         # Display search.html.
