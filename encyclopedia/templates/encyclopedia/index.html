@@ -9,7 +9,7 @@
 
     <ul>
         {% for entry in entries %}
-            <!-- Create links for each entry/page title. These links will display the page view. -->
+            <!-- Create links for each entry/page title. These links will display the page.html view. -->
             <!-- https://docs.djangoproject.com/en/5.0/topics/http/urls/ -->
             <!-- <li>{{ entry }}</li> -->
             <li><a href="{% url 'page' entry %}">{{ entry }}</a></li>

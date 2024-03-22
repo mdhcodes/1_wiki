@@ -1,11 +1,11 @@
 {% extends "encyclopedia/layout.html" %}
 
-<!-- Entry Page requirements must include page.html which will dynamically generate/populate for each url entry/page title GET request. -->
+<!-- Entry Page requirements must include page.html which will dynamically populate for each entry/page title GET request. -->
 
- {% block title %}
-     {{ title }}
- {% endblock %}
- 
- {% block body %} 
-     {{ entry }}
- {% endblock %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body %} 
+    {{ entry }}
+{% endblock %}
