@@ -12,7 +12,9 @@
         <div class="row">
             <div class="sidebar col-lg-2 col-md-3">
                 <h2>Wiki</h2>
-                <form>
+                <!-- Create a functional search box. Add a form action attribute to implement search. -->
+                <!-- Without functionality, a CSS query leads to the following url: http://127.0.0.1:8000/?q=css. -->
+                <form action="{% url 'search' %}">
                     <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
                 </form>
                 <div>
