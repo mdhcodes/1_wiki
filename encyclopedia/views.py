@@ -61,9 +61,27 @@ def search(request):
         return HttpResponseRedirect(reverse("page", kwargs={"name": title.lower()}))
     else:
         # If the title is not in the list of entries...
-        # Display search.html.
-        return render(request, "encyclopedia/search.html", {
-            # If the query title does not match an entry, a search results page displays a list of all entries that have the query as a substring.
-            # Clicking on any of the entry names on the search results page should take the user to that entry’s page.
-
-        })
+        # If the query title does not match an entry, a search results page displays a list of all entries that have the query as a substring.
+        
+        # Title is the substring and title is accessed above.
+        # Check title.lower() against all the entries.
+        query_matches = util.find_substring_find(title.lower()) # Function uses find() - Speed according to Network Developer Tools - query 'hTM' - 54ms
+        # query_match = util.find_substring_in(title.lower()) # Function uses in - Speed according to Network Developer Tools - query 'hTM' - 72ms 
+        # Optimized for multiple matches.
+        # If the entry.lower() is a substring of an element in lowercase...
+        # if query_match[0]: # Only one match found
+        # Multiple matches found.
+        if len(query_matches) > 0:
+            # Store the value in a variable. 
+            # entry = query_match[0] #  Only one match found.
+            # Store the values in a list.
+            entries = query_matches
+            # print("Title", title.lower())
+            # print("Entry", entry)
+            print('Query Matches Entries', entries)
+            # Display the entry title that contains the substring on search.html.
+            return render(request, "encyclopedia/search.html", {
+                # Send context to search .html
+                # "entry": entry
+                "entries": entries
+            })

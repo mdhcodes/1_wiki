@@ -77,3 +77,35 @@ def lower_entries():
         # print('After assignment', entries)
 
     return entries
+
+
+# Function that checks to see if user input is a substring of an entry.
+# query is the substring.
+def find_substring_find(query):
+    # The match variable stores the list that will capture the entry value(s) that match the query/substring.
+    matches = []
+    # Create a list of all the entries.
+    entries = list_entries()
+    # Loop over the list of entries to find any that match an entry.
+    for entry in entries:
+        # find() returns the first index where the substring is found. Since the string might begin at the first index(0), the results of find must be > or == to 0.   
+        # https://www.freecodecamp.org/news/python-find-how-to-search-for-a-substring-in-a-string/
+        if entry.lower().find(query) >= 0:
+        # Store the entry matches in the list named match.
+            matches.append(entry)
+            
+    return matches
+
+
+# Find substring using 'in'
+def find_substring_in(query):
+    matches = []
+    entries = lower_entries_range()
+    print('Entries', entries)
+    print('query', query)
+    for entry in entries:
+        print('Entry', entry)
+        if query.lower() in entry:
+            matches.append(entry)
+
+    return matches

@@ -1,11 +1,20 @@
 {% extends "encyclopedia/layout.html" %}
 
 <!-- Search Page requirements must include search.html which will dynamically populate for each query/GET request generated from the search box. -->
+<!-- Clicking on any of the entry names on the search results page should take the user to that entry’s page. -->
+<!-- Optimized for multiple matches. -->
 
 {% block title %}
-    {{ title }}
+    Search
 {% endblock %}
 
 {% block body %} 
-    {{ entry }}
+
+    <p>Based on your query, here are the possible entries you're searching for.</p>
+
+    <ul>
+        {% for entry in entries %}
+            <li><a href="{% url 'page' entry %}">{{ entry }}</a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}
