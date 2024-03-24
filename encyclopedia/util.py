@@ -39,18 +39,20 @@ def get_entry(title):
 
 # Function to convert entries to lowercase strings.
 # Using entries.append() and entries.remove() mutated the entries list and altered the element positions and indexing which caused the loop to skip elements.
-# def lower_entries_remove():
-#     # Call list_entries() loop over each and 
-#     entries = list_entries()
-#     print('Entries original list from util.py', entries)
-#     for entry in entries:
-#         entries.append(entry.lower())
-#         print('After append', entries)
-#         entries.remove(entry)
-#         print('After remove', entries)
-#         print('Entries list from util.py lower_entries()', entries)
+"""
+def lower_entries_remove():
+    # Call list_entries() loop over each and 
+    entries = list_entries()
+    print('Entries original list from util.py', entries)
+    for entry in entries:
+        entries.append(entry.lower())
+        print('After append', entries)
+        entries.remove(entry)
+        print('After remove', entries)
+        print('Entries list from util.py lower_entries()', entries)
 
-#     return entries
+    return entries
+"""
 
 
 # Function to convert entries to lowercase strings.
@@ -109,3 +111,17 @@ def find_substring_in(query):
             matches.append(entry)
 
     return matches
+
+
+# Function checks if an encyclopedia title/entry already exists. 
+def entry_exists(title):
+    check = []
+    entries = lower_entries_range()
+    for entry in entries:
+        if title.lower() == entry:
+            check.append(entry)
+
+    if len(check) > 0:
+        return True
+    else:
+        return False

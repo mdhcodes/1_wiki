@@ -1,0 +1,19 @@
+{% extends "encyclopedia/layout.html" %}
+
+    <!-- New Page Requirements will display a form to the user allowing them to create a new encyclopedia entry with a 
+        title and the Markdown content for the page.  -->
+
+{% block title %}
+    New Page
+{% endblock %}
+
+{% block body %}
+    <p>Create a new page.</p>
+    <p>{{ error }}</p>
+    <!-- Post method is used when a form will alter the state of a web page. -->
+    <form action="{% url 'new_page' %}" method="post">
+        {% csrf_token %} <!-- Django requirement to prevent CSRF Attacks. -->
+        {{ form }}
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}

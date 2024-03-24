@@ -4,6 +4,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
+# Import required to use Django Forms.
+# https://docs.djangoproject.com/en/4.0/ref/forms/api/
+from django import forms
 
 from . import util
 
@@ -58,7 +61,7 @@ def search(request):
         entry = util.get_entry(title)
         # Redirect user to entry/title page results passing the GET request "q" value as kwargs. 
         # https://docs.djangoproject.com/en/5.0/ref/urlresolvers/
-        return HttpResponseRedirect(reverse("page", kwargs={"name": title.lower()}))
+        return HttpResponseRedirect(reverse("page", kwargs={"name": entry}))
     else:
         # If the title is not in the list of entries...
         # If the query title does not match an entry, a search results page displays a list of all entries that have the query as a substring.
@@ -81,7 +84,54 @@ def search(request):
             print('Query Matches Entries', entries)
             # Display the entry title that contains the substring on search.html.
             return render(request, "encyclopedia/search.html", {
-                # Send context to search .html
+                # Send context to search.html
                 # "entry": entry
                 "entries": entries
             })
+        
+
+# New Page requirements must render new_page.html.
+"""
+Users should be able to enter a title for the page and, in a textarea, should be able to enter the Markdown content for the page.
+    Users should be able to click a button to save their new page.
+    When the page is saved, if an encyclopedia entry already exists with the provided title, the user should be presented with an error message.
+    Otherwise, the encyclopedia entry should be saved to disk, and the user should be taken to the new entry’s page.
+"""        
+
+# Create a new form by creating a new class called CreatePageForm. This new class will collect the specified data from the user.
+class CreatePageForm(forms.Form):
+    title = forms.CharField(label="Title") 
+    # https://docs.djangoproject.com/en/5.0/ref/forms/widgets/
+    content = forms.CharField(widget=forms.Textarea(attrs={"name": "content"}))
+
+def new_page(request): # Will need name
+    # POST request
+    if request.method == "POST":
+        # Store user data in a variable named form_data.
+        form_data = CreatePageForm(request.POST)
+        # If the form data is valid...
+        if form_data.is_valid():
+            # Capture all the data from the 'cleaned' version of the form_data within the class CreatePageForm(forms.Form) from the data field variables title and content.
+            title = form_data.cleaned_data["title"]
+            content = form_data.cleaned_data["content"]
+            print("Form Title:", title)
+            print("Form Content:", content)
+
+            # If an encyclopedia entry already exists with the provided title, the user should be presented with an error message.
+            if util.entry_exists(title):
+                error = "This title already exists."                    
+                return render(request, "encyclopedia/new_page.html", {
+                    "error": error,
+                    "form": CreatePageForm() 
+                })
+            else:
+                # Save the new page entry.
+                util.save_entry(title, content)
+                # Redirect user to the new entry’s page.
+                return HttpResponseRedirect(reverse("page", kwargs={"name": title}))
+    else:        
+        # GET request
+        return render(request, "encyclopedia/new_page.html", {
+            # Send new form context to new_page.html.
+            "form": CreatePageForm()        
+        })
