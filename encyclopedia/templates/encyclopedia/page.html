@@ -1,6 +1,7 @@
 {% extends "encyclopedia/layout.html" %}
 
 <!-- Entry Page requirements must include page.html which will dynamically populate for each entry/page title GET request. -->
+<!-- Edit Page requirements must include a link on page.html that allows a user to request the ability to edit the current page. -->
 
 {% block title %}
     {{ title }}
@@ -8,4 +9,5 @@
 
 {% block body %} 
     {{ entry }}
+        <a href="{% url 'edit' title %}">Edit</a>
 {% endblock %}

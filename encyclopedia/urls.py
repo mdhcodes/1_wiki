@@ -13,6 +13,8 @@ urlpatterns = [
     path("search", views.search, name="search"),
     # New Page requirements must include a url path to new_page.html here.
     path("new_page", views.new_page, name="new_page"),
+    # Edit Page requirements must include a url path to edit.html here.
+    path("edit/<str:name>", views.edit, name="edit"),
     # Entry Page requirements must include a url path to each entry/page title (CSS, DJANGO, GIT, HTML, PYTHON, etc.) here.
     path("<str:name>", views.page, name="page")
 ]

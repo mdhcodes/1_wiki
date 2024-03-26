@@ -104,7 +104,7 @@ class CreatePageForm(forms.Form):
     # https://docs.djangoproject.com/en/5.0/ref/forms/widgets/
     content = forms.CharField(widget=forms.Textarea(attrs={"name": "content"}))
 
-def new_page(request): # Will need name
+def new_page(request):
     # POST request
     if request.method == "POST":
         # Store user data in a variable named form_data.
@@ -135,3 +135,53 @@ def new_page(request): # Will need name
             # Send new form context to new_page.html.
             "form": CreatePageForm()        
         })
+    
+
+# Create a new form by creating a new class called EditPageForm. This new class will collect the specified data from the user.
+class EditPageForm(forms.Form):
+    title = forms.CharField(label="Title") 
+    # https://docs.djangoproject.com/en/5.0/ref/forms/widgets/
+    textarea = forms.CharField(widget=forms.Textarea())
+
+def edit(request, name):
+    title = name
+    # The variable existing_data will store a dictionary of the current entry page title and markdown/textarea key value pairs.
+    # The dictionary is needed to initialize the Django form with this existing data.
+    existing_data = util.get_initial_dict(title)
+    # Populate textarea with existing markdown by specifying initial. 
+    # https://www.geeksforgeeks.org/initial-form-data-django-forms/ 
+    form = EditPageForm(initial = existing_data) 
+
+    # POST request
+    if request.method == "POST":
+         # Store user data in a variable named form_data.
+        form_revisions = EditPageForm(request.POST)
+        # If the form revisions are valid...
+        if form_revisions.is_valid():
+            # Capture all the revisions from the 'cleaned' version of the form_revisions within the class EditPageForm(forms.Form) from the data field variables title and textarea.
+            title = form_revisions.cleaned_data["title"]
+            textarea = form_revisions.cleaned_data["textarea"]
+            
+            content = textarea
+            print("Title:", title)
+            print("Content:", content)
+            # Save the entry's revisions.
+            util.save_entry(title, content)
+            # Redirect user to the updated entry’s page.
+            return HttpResponseRedirect(reverse("page", kwargs={"name": title}))
+        
+        else:
+            # Form is invalid
+            error = "The form is invalid. Please check your changes."
+            form = EditPageForm(initial = form_revisions)
+            return render(request, "encyclopedia/edit.html", {
+                "title": title,
+                "form": form
+            })
+    
+    else:
+        # GET request
+        return render(request, "encyclopedia/edit.html", {
+                "title": title,     
+                "form": form           
+            }) 

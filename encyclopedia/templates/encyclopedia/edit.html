@@ -1,0 +1,16 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Edit Page
+{% endblock %}
+
+{% block body %}
+    <p>Edit {{ title }} page here.</p>
+    <p>{{ error }}</p>
+    <form action="{% url 'edit' title %}" method="post"><!-- Save changes -->  
+         <!-- Forbidden (403) Error Message: In the template, there is a {% csrf_token %} template tag [inside] each POST form that targets an internal URL. -->
+        {% csrf_token %} <!-- Django requirement to prevent CSRF Attacks. --> 
+        {{ form }}    
+    <input type="submit" value="Save">
+    </form>
+{% endblock %}

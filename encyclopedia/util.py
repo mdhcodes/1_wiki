@@ -125,3 +125,14 @@ def entry_exists(title):
         return True
     else:
         return False
+    
+
+# Dictionary for initial values with the key names equal to the field names. 
+# https://www.geeksforgeeks.org/initial-form-data-django-forms/ 
+# https://www.freecodecamp.org/news/add-to-dict-in-python/
+def get_initial_dict(title):
+    content_dict = {}
+    # entry = get_entry(title)
+    content_dict["title"] = title
+    content_dict["textarea"] = default_storage.open(f"entries/{title}.md").read().decode("utf-8")
+    return content_dict
