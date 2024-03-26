@@ -25,7 +25,8 @@
                     <a href="{% url 'new_page' %}">Create New Page</a>
                 </div>
                 <div>
-                    Random Page
+                    <!-- Clicking “Random Page” in the sidebar will take the user to a random encyclopedia entry. -->
+                    <a href="{% url 'random_page' %}">Random Page</a>
                 </div>
                 {% block nav %}
                 {% endblock %}

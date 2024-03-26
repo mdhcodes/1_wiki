@@ -8,6 +8,11 @@ from django.http import HttpResponseRedirect
 # https://docs.djangoproject.com/en/4.0/ref/forms/api/
 from django import forms
 
+# Import required to use random module.
+# https://www.geeksforgeeks.org/random-numbers-in-python/
+# https://www.w3schools.com/python/ref_random_choice.asp
+import random
+
 from . import util
 
 
@@ -137,6 +142,7 @@ def new_page(request):
         })
     
 
+# Edit Page requirements must render edit.html
 # Create a new form by creating a new class called EditPageForm. This new class will collect the specified data from the user.
 class EditPageForm(forms.Form):
     title = forms.CharField(label="Title") 
@@ -185,3 +191,18 @@ def edit(request, name):
                 "title": title,     
                 "form": form           
             }) 
+    
+
+# Random Page requirements will direct user to a random page.html.
+def random_page(request):
+    # Get a random entry from the list of encyclopedia entries.
+    entries = util.list_entries()
+    random_entry = random.choice(entries)
+    # Get the entry for the random entry specified.
+    title = random_entry
+    entry = util.get_entry(title)
+
+    return render(request, "encyclopedia/page.html", {
+            "title": title,
+            "entry": entry        
+    })
