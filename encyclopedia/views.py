@@ -167,7 +167,7 @@ def edit(request, name):
             print("Content:", content)
             # Save the entry's revisions.
             util.save_entry(title, content)
-            # Redirect user to the updated entry’s page.
+            # Redirect user to the revised entry page.
             return HttpResponseRedirect(reverse("page", kwargs={"name": title}))
         
         else:
