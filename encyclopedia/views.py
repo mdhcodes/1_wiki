@@ -8,6 +8,9 @@ from django.http import HttpResponseRedirect
 # https://docs.djangoproject.com/en/4.0/ref/forms/api/
 from django import forms
 
+# Import to convert markdown to HTML.
+import markdown2
+
 from . import util
 
 
@@ -28,6 +31,9 @@ def page(request, name):
         # Display none.html
         return render(request, "encyclopedia/none.html")
     else:
+        # Convert Markdown to HTML with markdown2
+        # https://github.com/trentm/python-markdown2
+        entry = markdown2.markdown(entry)
         # If the entry exists, display page.html with the following context ("dictionary of values to add to the template context").
         # render() - https://docs.djangoproject.com/en/5.0/topics/http/shortcuts/ 
         return render(request, "encyclopedia/page.html", {
