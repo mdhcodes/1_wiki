@@ -68,11 +68,9 @@ def search(request):
 
     # If title.lower() is in the list of lowercase entries...
     if title.lower() in lowercase:
-        # Get the entry.
-        entry = util.get_entry(title)
         # Redirect user to entry/title page results passing the GET request "q" value as kwargs. 
         # https://docs.djangoproject.com/en/5.0/ref/urlresolvers/
-        return HttpResponseRedirect(reverse("page", kwargs={"name": entry}))
+        return HttpResponseRedirect(reverse("page", kwargs={"name": title}))
     else:
         # If the title is not in the list of entries...
         # If the query title does not match an entry, a search results page displays a list of all entries that have the query as a substring.
@@ -99,6 +97,10 @@ def search(request):
                 # "entry": entry
                 "entries": entries
             })
+        else:
+            # If there are no query_matches.
+            # Direct the user to none.html.
+            return render(request, "encyclopedia/none.html")
         
 
 # New Page requirements must render new_page.html.
