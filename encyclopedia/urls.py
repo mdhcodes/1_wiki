@@ -15,6 +15,8 @@ urlpatterns = [
     path("new_page", views.new_page, name="new_page"),
     # Edit Page requirements must include a url path to edit.html here.
     path("edit/<str:name>", views.edit, name="edit"),
+    # Random Page requirements mmust include a url path to random.html here.
+    path("random_page", views.random_page, name="random_page"),
     # Entry Page requirements must include a url path to each entry/page title (CSS, DJANGO, GIT, HTML, PYTHON, etc.) here.
     path("<str:name>", views.page, name="page")
 ]
